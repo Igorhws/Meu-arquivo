@@ -1,126 +1,34 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <title>Meu App de Animes</title>
-  <style>
-    body {
-      background: #111;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      margin: 0; padding: 0;
-    }
-    header {
-      background: #222;
-      padding: 1em;
-      text-align: center;
-      font-size: 1.2em;
-    }
-    #anime-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 1em;
-      padding: 1em;
-    }
-    .anime-card {
-      background: #333;
-      border-radius: 8px;
-      overflow: hidden;
-      text-align: center;
-    }
-    .anime-card img {
-      width: 100%;
-      display: block;
-    }
-    .anime-card h3 {
-      margin: 0;
-      padding: 0.5em;
-      font-size: 1em;
-    }
-    #update-banner {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      background: #ff9800;
-      color: #000;
-      text-align: center;
-      padding: 1em;
-      z-index: 9999;
-    }
-    #update-banner button {
-      background: #000;
-      color: #fff;
-      border: none;
-      margin-left: 1em;
-      padding: 0.5em 1em;
-      cursor: pointer;
-    }
-  </style>
-</head>
-<body>
-
-<header>📺 Meu App de Animes</header>
-
-<div id="update-banner">
-  Nova atualização disponível!
-  <button onclick="aplicarAtualizacao()">Atualizar agora</button>
-</div>
-
-<div id="anime-list">Carregando animes...</div>
-
-<script>
-  const JSON_URL = "https://raw.githubusercontent.com/Igorhws/Meu-arquivo/refs/heads/main/Meu%20app.json";
-
-  let animesHash = '';
-
-  async function carregarAnimes() {
-    const res = await fetch(JSON_URL);
-    const json = await res.json();
-
-    const lista = document.getElementById('anime-list');
-    lista.innerHTML = ''; // Limpa
-
-    json.forEach(anime => {
-      const card = document.createElement('div');
-      card.className = 'anime-card';
-      card.innerHTML = `
-        <img src="${anime.imagem}" alt="${anime.titulo}">
-        <h3>${anime.titulo}</h3>
-        <p>${anime.ano} | ${anime.status}</p>
-      `;
-      lista.appendChild(card);
-    });
-
-    // Gera hash para detectar mudanças
-    animesHash = JSON.stringify(json);
-    localStorage.setItem('animesHash', animesHash);
+[
+  {
+    "titulo": "Naruto",
+    "ano": "2002",
+    "status": "Completo",
+    "imagem": "https://link-da-imagem.jpg",
+    "episodios": [
+      {
+        "numero": 1,
+        "link": "https://link-do-episodio-1.com"
+      },
+      {
+        "numero": 2,
+        "link": "https://link-do-episodio-2.com"
+      }
+    ]
+  },
+  {
+    "titulo": "One Piece",
+    "ano": "1999",
+    "status": "Em andamento",
+    "imagem": "https://link-da-imagem.jpg",
+    "episodios": [
+      {
+        "numero": 1,
+        "link": "https://link-do-episodio-1.com"
+      },
+      {
+        "numero": 2,
+        "link": "https://link-do-episodio-2.com"
+      }
+    ]
   }
-
-  async function verificarAtualizacao() {
-    const res = await fetch(JSON_URL);
-    const json = await res.json();
-    const novoHash = JSON.stringify(json);
-    const hashSalvo = localStorage.getItem('animesHash');
-
-    if (hashSalvo && hashSalvo !== novoHash) {
-      document.getElementById('update-banner').style.display = 'block';
-    }
-  }
-
-  function aplicarAtualizacao() {
-    document.getElementById('update-banner').innerHTML = 'Atualizando...';
-    setTimeout(() => {
-      location.reload();
-    }, 1500);
-  }
-
-  // Carrega e salva hash
-  carregarAnimes();
-
-  // Verifica de tempo em tempo
-  setInterval(verificarAtualizacao, 10000); // Verifica a cada 10s
-
-</script>
-
-</body>
-</html>
+]
